@@ -100,5 +100,26 @@ public class BookRepositoryTest {
     	assertFalse(bookRepository.findById(id).isPresent());
     	
     }
+    
+    //책 수정
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void update_test() {
+    	
+    	//given
+    	Long id = 1L;
+    	String title = "transaction";
+    	String author = "Kimtaehee";
+    	Book book = new Book(id, title, author);
+    	
+    	//when
+    	Book bookPS = bookRepository.save(book);
+    	
+    	//then
+    	assertEquals(id, bookPS.getId());
+        assertEquals(title, bookPS.getTitle());
+        assertEquals(author, bookPS.getAuthor());
+    	
+    }
 
 }
