@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,7 +29,7 @@ public class BookRepositoryTest {
         bookRepository.save(book);
     }
 	
-	//책등록
+	@DisplayName("책 등록")
 	@Test
     public void insert_test() {
 		
@@ -50,11 +51,11 @@ public class BookRepositoryTest {
     } //트랜잭션 종료(저장된 데이터를 초기화함)
 	
 	
-	//책목록
+	@DisplayName("책 목록")
 	@Test
 	public void selectAll_test() {
 		
-		//given
+        //given
 		String title = "junit";
         String author = "태희";
 				
@@ -67,7 +68,7 @@ public class BookRepositoryTest {
 		
 	}
 	
-	//책 한건보기
+	@DisplayName("책 한건보기")
 	@Sql("classpath:db/tableInit.sql")
     @Test
     public void select_test() {
@@ -85,7 +86,7 @@ public class BookRepositoryTest {
         
     }
     
-    //책 삭제
+	@DisplayName("책 삭제")
     @Sql("classpath:db/tableInit.sql")
     @Test
     public void delete_test() {
@@ -101,7 +102,7 @@ public class BookRepositoryTest {
     	
     }
     
-    //책 수정
+	@DisplayName("책 수정")
     @Sql("classpath:db/tableInit.sql")
     @Test
     public void update_test() {
