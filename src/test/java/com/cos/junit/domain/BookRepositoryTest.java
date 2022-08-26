@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 public class BookRepositoryTest {
@@ -28,7 +29,7 @@ public class BookRepositoryTest {
     }
 	
 	//책등록
-	//@Test
+	@Test
     public void insert_test() {
 		
         //given (데이터 준비)
@@ -50,7 +51,7 @@ public class BookRepositoryTest {
 	
 	
 	//책목록
-	//@Test
+	@Test
 	public void selectAll_test() {
 		
 		//given
@@ -67,7 +68,8 @@ public class BookRepositoryTest {
 	}
 	
 	//책 한건보기
-    //@Test
+	@Sql("classpath:db/tableInit.sql")
+    @Test
     public void select_test() {
     	
         //given
@@ -84,6 +86,7 @@ public class BookRepositoryTest {
     }
     
     //책 삭제
+    @Sql("classpath:db/tableInit.sql")
     @Test
     public void delete_test() {
     	
