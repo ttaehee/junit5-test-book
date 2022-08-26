@@ -1,6 +1,7 @@
 package com.cos.junit.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BookRepositoryTest {
     }
 	
 	//책등록
-	@Test
+	//@Test
     public void insert_test() {
 		
         //given (데이터 준비)
@@ -49,7 +50,7 @@ public class BookRepositoryTest {
 	
 	
 	//책목록
-	@Test
+	//@Test
 	public void selectAll_test() {
 		
 		//given
@@ -66,7 +67,7 @@ public class BookRepositoryTest {
 	}
 	
 	//책 한건보기
-    @Test
+    //@Test
     public void select_test() {
     	
         //given
@@ -80,6 +81,21 @@ public class BookRepositoryTest {
         assertEquals(title, bookPS.getTitle());
         assertEquals(author, bookPS.getAuthor());
         
+    }
+    
+    //책 삭제
+    @Test
+    public void delete_test() {
+    	
+    	//given
+    	Long id = 1L;
+    	
+    	//when
+    	bookRepository.deleteById(id);
+    	
+    	//then
+    	assertFalse(bookRepository.findById(id).isPresent());
+    	
     }
 
 }
