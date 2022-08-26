@@ -2,6 +2,9 @@ package com.cos.junit.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,6 +14,17 @@ public class BookRepositoryTest {
 	
 	@Autowired
 	private BookRepository bookRepository;
+	
+    @BeforeEach //각 테스트 시작전 한번씩 실행
+    public void getData() {
+        String title = "junit";
+        String author = "태희";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        bookRepository.save(book);
+    }
 	
 	//책등록
 	@Test
@@ -32,5 +46,40 @@ public class BookRepositoryTest {
         assertEquals(author, bookPS.getAuthor());
         
     } //트랜잭션 종료(저장된 데이터를 초기화함)
+	
+	
+	//책목록
+	@Test
+	public void selectAll_test() {
+		
+		//given
+		String title = "junit";
+        String author = "태희";
+				
+		//when
+		List<Book> books = bookRepository.findAll();
+		
+		//then
+		assertEquals(title, books.get(0).getTitle());
+        assertEquals(author, books.get(0).getAuthor());
+		
+	}
+	
+	//책 한건보기
+    @Test
+    public void select_test() {
+    	
+        //given
+        String title = "junit";
+        String author = "태희";
+
+        //when
+        Book bookPS = bookRepository.findById(1L).get();
+
+        //then
+        assertEquals(title, bookPS.getTitle());
+        assertEquals(author, bookPS.getAuthor());
+        
+    }
 
 }
