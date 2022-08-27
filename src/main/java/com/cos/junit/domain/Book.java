@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.cos.junit.web.dto.BookRespDto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +37,14 @@ public class Book {
     public void update(String titie, String author) {
         this.title = titie;
         this.author = author;
+    }
+    
+    public BookRespDto toDto() {
+        return BookRespDto.builder()
+                .id(id)
+                .title(title)
+                .author(author)
+                .build();
     }
 
 }
