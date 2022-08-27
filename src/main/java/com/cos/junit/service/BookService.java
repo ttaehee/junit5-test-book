@@ -1,5 +1,9 @@
 package com.cos.junit.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,5 +26,22 @@ public class BookService {
         Book bookPS = bookRepository.save(dto.toEntity());
         return new BookRespDto().toDto(bookPS);
     }
-
+    
+    //책 목록보기
+    public List<BookRespDto> selectAllBook(){
+    	return bookRepository.findAll().stream()
+    			.map(new BookRespDto()::toDto)
+    			.collect(Collectors.toList());
+    }
+    
+    //책 한건보기
+    public BookRespDto selectBook(Long id) {
+    	Optional<Book> bookOP = bookRepository.findById(id);
+    	if(bookOP.isPresent()) {
+    		return new BookRespDto().toDto(bookOP.get());
+    	}else {
+    		throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+    	}
+    }
+    
 }
