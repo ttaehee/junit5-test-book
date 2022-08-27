@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,5 +75,25 @@ public class BookServiceTest {
         assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring");
         assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("태희");
     }  
+    
+    @DisplayName("책 한건보기")
+    @Test
+    public void selecBook_test() {
+    	
+    	// given
+        Long id = 1L;
+
+        // stub
+        Book book = new Book(1L, "junit", "김태희");
+        Optional<Book> bookOP = Optional.of(book);
+        when(bookRepository.findById(id)).thenReturn(bookOP);
+
+        // when
+        BookRespDto bookRespDto = bookService.selectBook(id);
+
+        // then
+        assertThat(bookRespDto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(bookRespDto.getAuthor()).isEqualTo(book.getAuthor());	
+    }
 
 }
