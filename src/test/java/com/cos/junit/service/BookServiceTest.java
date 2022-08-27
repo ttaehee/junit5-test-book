@@ -4,12 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.cos.junit.domain.Book;
 import com.cos.junit.domain.BookRepository;
 import com.cos.junit.util.MailSender;
 import com.cos.junit.web.dto.BookRespDto;
@@ -27,6 +32,7 @@ public class BookServiceTest {
     @Mock
     private MailSender mailSender;
     
+    @DisplayName("책 등록")
     @Test
     public void insertBook_test() {
     	
@@ -46,5 +52,27 @@ public class BookServiceTest {
         assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
         assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
     }
+    
+    @DisplayName("책 목록보기")
+    @Test
+    public void selectAllBook_test() {
+    	
+    	//given
+    	List<Book> books = new ArrayList<>();
+        books.add(new Book(1L, "junit", "김태희"));
+        books.add(new Book(2L, "spring", "태희"));
+    	
+    	//stub
+    	when(bookRepository.findAll()).thenReturn(books);
+    	
+    	//when
+    	List<BookRespDto> bookRespDtoList = bookService.selectAllBook();
+    	
+    	//then
+        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit");
+        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("김태희");
+        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring");
+        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("태희");
+    }  
 
 }

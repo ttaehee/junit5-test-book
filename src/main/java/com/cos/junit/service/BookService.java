@@ -39,7 +39,7 @@ public class BookService {
     public List<BookRespDto> selectAllBook(){
     	
     	return bookRepository.findAll().stream()
-    			.map(new BookRespDto()::toDto)
+    			.map((bookPS)-> new BookRespDto().toDto(bookPS))
     			.collect(Collectors.toList());
     }
     
