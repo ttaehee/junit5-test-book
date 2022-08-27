@@ -44,4 +44,10 @@ public class BookService {
     	}
     }
     
+    //책 삭제하기
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void deleteBook(Long id) {
+    	bookRepository.deleteById(id);
+    }
+  
 }
