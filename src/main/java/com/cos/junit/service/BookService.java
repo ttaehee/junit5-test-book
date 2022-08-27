@@ -24,18 +24,20 @@ public class BookService {
 	
 	//책 등록
     @Transactional(rollbackFor = RuntimeException.class)
-    public BookRespDto 책등록하기(BookSaveReqDto dto) {
+    public BookRespDto insertBook(BookSaveReqDto dto) {
+    	
         Book bookPS = bookRepository.save(dto.toEntity());
         if (bookPS != null) {
             if (!mailSender.send()) {
                 throw new RuntimeException("메일이 전송되지 않았습니다");
             }
         }
-        return new BookRespDto().toDto(bookPS);
+        return new BookRespDto().toDto(bookPS);   
     }
     
     //책 목록보기
     public List<BookRespDto> selectAllBook(){
+    	
     	return bookRepository.findAll().stream()
     			.map(new BookRespDto()::toDto)
     			.collect(Collectors.toList());
@@ -43,6 +45,7 @@ public class BookService {
     
     //책 한건보기
     public BookRespDto selectBook(Long id) {
+    	
     	Optional<Book> bookOP = bookRepository.findById(id);
     	if(bookOP.isPresent()) {
     		return new BookRespDto().toDto(bookOP.get());
@@ -60,6 +63,7 @@ public class BookService {
     //책 수정
     @Transactional(rollbackFor = RuntimeException.class)
     public BookRespDto updateBook(Long id, BookSaveReqDto dto) {
+    	
     	Optional<Book> bookOP = bookRepository.findById(id);
     	if(bookOP.isPresent()) {
     		Book bookPS = bookOP.get();
