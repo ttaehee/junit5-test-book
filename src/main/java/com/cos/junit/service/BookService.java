@@ -49,5 +49,18 @@ public class BookService {
     public void deleteBook(Long id) {
     	bookRepository.deleteById(id);
     }
+    
+    //책 수정
+    @Transactional(rollbackFor = RuntimeException.class)
+    public BookRespDto updateBook(Long id, BookSaveReqDto dto) {
+    	Optional<Book> bookOP = bookRepository.findById(id);
+    	if(bookOP.isPresent()) {
+    		Book bookPS = bookOP.get();
+    		bookPS.update(dto.getTitle(), dto.getAuthor());
+    		return new BookRespDto().toDto(bookOP.get());
+    	}else {
+    		throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+    	}
+    }
   
 }

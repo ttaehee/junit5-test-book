@@ -31,5 +31,10 @@ public class Book {
         this.title = title;
         this.author = author;
     }
+    
+    public void update(String titie, String author) {
+        this.title = titie;
+        this.author = author;
+    }
 
 }
