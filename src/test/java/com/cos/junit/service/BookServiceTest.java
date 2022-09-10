@@ -18,8 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.cos.junit.domain.Book;
 import com.cos.junit.domain.BookRepository;
 import com.cos.junit.util.MailSender;
-import com.cos.junit.web.dto.BookRespDto;
-import com.cos.junit.web.dto.BookSaveReqDto;
+import com.cos.junit.web.dto.request.BookSaveReqDto;
+import com.cos.junit.web.dto.response.BookRespDto;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -80,18 +80,18 @@ public class BookServiceTest {
     @Test
     public void selectBook_test() {
     	
-    	// given
+    	//given
         Long id = 1L;
 
-        // stub
+        //stub
         Book book = new Book(1L, "junit", "김태희");
         Optional<Book> bookOP = Optional.of(book);
         when(bookRepository.findById(id)).thenReturn(bookOP);
 
-        // when
+        //when
         BookRespDto bookRespDto = bookService.selectBook(id);
 
-        // then
+        //then
         assertThat(bookRespDto.getTitle()).isEqualTo(book.getTitle());
         assertThat(bookRespDto.getAuthor()).isEqualTo(book.getAuthor());	
     }
@@ -100,21 +100,21 @@ public class BookServiceTest {
     @Test
     public void updateBook_test() {
     	
-    	// given
+    	//given
         Long id = 1L;
         BookSaveReqDto dto = new BookSaveReqDto();
-        dto.setTitle("spring"); // spring강의
-        dto.setAuthor("태희"); // 겟인데어
+        dto.setTitle("spring");
+        dto.setAuthor("태희");
 
-        // stub
+        //stub
         Book book = new Book(1L, "junit", "김태희");
         Optional<Book> bookOP = Optional.of(book);
         when(bookRepository.findById(id)).thenReturn(bookOP);
 
-        // when
+        //when
         BookRespDto bookRespDto = bookService.updateBook(id, dto);
 
-        // then
+        //then
         assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
         assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());	
     }   
