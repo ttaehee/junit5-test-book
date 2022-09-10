@@ -1,7 +1,14 @@
 package com.cos.junit.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +28,20 @@ public class BookApiController {
 	
 	//책등록
     @PostMapping("/api/v1/book")
-    public ResponseEntity<?> saveBook(@RequestBody BookSaveReqDto bookSaveReqDto) {
+    public ResponseEntity<?> saveBook(@RequestBody @Valid BookSaveReqDto bookSaveReqDto, BindingResult bindingResult) {
+    	
+    	//추후 AOP 처리로 변경 고려하기
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                errorMap.put(fe.getField(), fe.getDefaultMessage());
+            }
+            System.out.println("=================================");
+            System.out.println(errorMap.toString());
+            System.out.println("=================================");
+
+            throw new RuntimeException(errorMap.toString());
+        }
 
         BookRespDto bookRespDto = bookService.insertBook(bookSaveReqDto);
         
