@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cos.junit.service.BookService;
 import com.cos.junit.web.dto.request.BookSaveReqDto;
 import com.cos.junit.web.dto.response.BookRespDto;
+import com.cos.junit.web.dto.response.CommonRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,8 @@ public class BookApiController {
 
         BookRespDto bookRespDto = bookService.insertBook(bookSaveReqDto);
         
-        return new ResponseEntity<>(bookRespDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 저장 성공").body(bookRespDto).build(),
+                HttpStatus.CREATED);
     }
 
 }
