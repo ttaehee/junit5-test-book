@@ -71,10 +71,10 @@ public class BookServiceTest {
     	BookListRespDto bookListRespDto = bookService.selectAllBook();
     	
     	//then
-        assertThat(bookListRespDto.getBookList().get(0).getTitle()).isEqualTo("junit");
-        assertThat(bookListRespDto.getBookList().get(0).getAuthor()).isEqualTo("김태희");
-        assertThat(bookListRespDto.getBookList().get(1).getTitle()).isEqualTo("spring");
-        assertThat(bookListRespDto.getBookList().get(1).getAuthor()).isEqualTo("태희");
+        assertThat(bookListRespDto.getItems().get(0).getTitle()).isEqualTo("junit");
+        assertThat(bookListRespDto.getItems().get(0).getAuthor()).isEqualTo("김태희");
+        assertThat(bookListRespDto.getItems().get(1).getTitle()).isEqualTo("spring");
+        assertThat(bookListRespDto.getItems().get(1).getAuthor()).isEqualTo("태희");
     }  
     
     @DisplayName("책 한건보기")

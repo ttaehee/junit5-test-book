@@ -8,10 +8,10 @@ import lombok.Getter;
 @Getter
 public class BookListRespDto {
 	
-    List<BookRespDto> bookList;
+    List<BookRespDto> items;
 
     @Builder
     public BookListRespDto(List<BookRespDto> bookList) {
-        this.bookList = bookList;
+        this.items = bookList;
     }
 }
