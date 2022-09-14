@@ -19,6 +19,7 @@ import com.cos.junit.domain.Book;
 import com.cos.junit.domain.BookRepository;
 import com.cos.junit.util.MailSender;
 import com.cos.junit.web.dto.request.BookSaveReqDto;
+import com.cos.junit.web.dto.response.BookListRespDto;
 import com.cos.junit.web.dto.response.BookRespDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,13 +68,13 @@ public class BookServiceTest {
     	when(bookRepository.findAll()).thenReturn(books);
     	
     	//when
-    	List<BookRespDto> bookRespDtoList = bookService.selectAllBook();
+    	BookListRespDto bookListRespDto = bookService.selectAllBook();
     	
     	//then
-        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit");
-        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("김태희");
-        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring");
-        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("태희");
+        assertThat(bookListRespDto.getBookList().get(0).getTitle()).isEqualTo("junit");
+        assertThat(bookListRespDto.getBookList().get(0).getAuthor()).isEqualTo("김태희");
+        assertThat(bookListRespDto.getBookList().get(1).getTitle()).isEqualTo("spring");
+        assertThat(bookListRespDto.getBookList().get(1).getAuthor()).isEqualTo("태희");
     }  
     
     @DisplayName("책 한건보기")

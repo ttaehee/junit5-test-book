@@ -11,6 +11,7 @@ import com.cos.junit.domain.Book;
 import com.cos.junit.domain.BookRepository;
 import com.cos.junit.util.MailSender;
 import com.cos.junit.web.dto.request.BookSaveReqDto;
+import com.cos.junit.web.dto.response.BookListRespDto;
 import com.cos.junit.web.dto.response.BookRespDto;
 
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,15 @@ public class BookService {
     }
     
     //책 목록보기
-    public List<BookRespDto> selectAllBook(){
+    public BookListRespDto selectAllBook(){
     	
-    	return bookRepository.findAll().stream()
-    			.map(Book::toDto)
-    			.collect(Collectors.toList());
+        List<BookRespDto> dtos = bookRepository.findAll().stream()
+              //.map((bookPS) -> bookPS.toDto())
+                .map(Book::toDto)
+                .collect(Collectors.toList());
+
+        BookListRespDto bookListRespDto = BookListRespDto.builder().bookList(dtos).build();
+        return bookListRespDto;
     }
     
     //책 한건보기
