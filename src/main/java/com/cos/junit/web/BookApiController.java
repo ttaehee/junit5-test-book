@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,16 +68,37 @@ public class BookApiController {
         BookRespDto bookRespDto = bookService.selectBook(id);
         
         return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 한건보기 성공").body(bookRespDto).build(),
-                HttpStatus.OK); // 200 = ok
+                HttpStatus.OK);
     }
     
+    //책삭제하기
     @DeleteMapping("/api/v1/book/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
     	
         bookService.deleteBook(id);
         
         return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 삭제하기 성공").body(null).build(),
-                HttpStatus.OK); // 200 = ok
+                HttpStatus.OK);
+    }
+    
+    //책수정하기
+    @PutMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveReqDto bookSaveReqDto,
+            BindingResult bindingResult) {
+
+    	//추후 AOP 처리로 변경 고려하기
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                errorMap.put(fe.getField(), fe.getDefaultMessage());
+            }
+            throw new RuntimeException(errorMap.toString());
+        }
+
+        BookRespDto bookRespDto = bookService.updateBook(id, bookSaveReqDto);
+        
+        return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 수정하기 성공").body(bookRespDto).build(),
+                HttpStatus.OK);
     }
 
 }
