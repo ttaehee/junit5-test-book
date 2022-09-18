@@ -69,5 +69,14 @@ public class BookApiController {
         return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 한건보기 성공").body(bookRespDto).build(),
                 HttpStatus.OK); // 200 = ok
     }
+    
+    @DeleteMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+    	
+        bookService.deleteBook(id);
+        
+        return new ResponseEntity<>(CommonRespDto.builder().code(1).msg("글 삭제하기 성공").body(null).build(),
+                HttpStatus.OK); // 200 = ok
+    }
 
 }
