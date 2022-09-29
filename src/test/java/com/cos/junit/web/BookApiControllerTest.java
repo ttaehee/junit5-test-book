@@ -14,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import com.cos.junit.service.BookService;
 import com.cos.junit.web.dto.request.BookSaveReqDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,9 +22,6 @@ import com.jayway.jsonpath.JsonPath;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BookApiControllerTest {
-	
-	@Autowired
-	private BookService bookService;
 	
 	@Autowired
 	private TestRestTemplate rt;
