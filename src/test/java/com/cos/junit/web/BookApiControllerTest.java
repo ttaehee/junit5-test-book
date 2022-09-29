@@ -3,6 +3,7 @@ package com.cos.junit.web;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
 
+import com.cos.junit.domain.Book;
+import com.cos.junit.domain.BookRepository;
 import com.cos.junit.web.dto.request.BookSaveReqDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +26,9 @@ import com.jayway.jsonpath.JsonPath;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BookApiControllerTest {
+	
+	@Autowired
+	private BookRepository bookRepository;
 	
 	@Autowired
 	private TestRestTemplate rt;
@@ -36,6 +43,17 @@ public class BookApiControllerTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 	}
 	
+	@BeforeEach
+    public void getData() {
+        String title = "junit";
+        String author = "태희";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        bookRepository.save(book);
+    }
+	
 	@Test
 	public void saveBook_test() throws JsonProcessingException {
 		
@@ -47,8 +65,7 @@ public class BookApiControllerTest {
 		String body = om.writeValueAsString(bookSaveReqDto);
 		
 		//when
-		HttpEntity<String> request = new HttpEntity<>(body, headers);
-		
+		HttpEntity<String> request = new HttpEntity<>(body, headers);	
 		ResponseEntity<String> response = rt.exchange("/api/v1/book", HttpMethod.POST, request, String.class);
 		
 		//then
@@ -59,6 +76,25 @@ public class BookApiControllerTest {
 		assertThat(title).isEqualTo("스프링1강");
 		assertThat(author).isEqualTo("태희");
 		
+	}
+	
+	@Sql("classpath:db/tableInit.sql")
+	@Test
+	public void selectAllBook_test() {
+		
+		//given
+		
+		//when
+		HttpEntity<String> request = new HttpEntity<>(null, headers);	
+		ResponseEntity<String> response = rt.exchange("/api/v1/book", HttpMethod.GET, request, String.class);
+		
+		//then
+		DocumentContext dc = JsonPath.parse(response.getBody());
+		Integer code = dc.read("$.code");
+		String title = dc.read("$.body.items[0].title");
+		
+		assertThat(code).isEqualTo(1);
+		assertThat(title).isEqualTo("junit");
 	}
 
 }
