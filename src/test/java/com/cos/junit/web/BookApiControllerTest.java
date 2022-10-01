@@ -80,7 +80,7 @@ public class BookApiControllerTest {
 	
 	@Sql("classpath:db/tableInit.sql")
 	@Test
-	public void selectAllBook_test() {
+	public void getBookList_test() {
 		
 		//given
 		
@@ -96,5 +96,25 @@ public class BookApiControllerTest {
 		assertThat(code).isEqualTo(1);
 		assertThat(title).isEqualTo("junit");
 	}
+	
+	@Sql("classpath:db/tableInit.sql")
+    @Test
+    public void getBookOne_test() {
+		
+        // given
+        Integer id = 1;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/" + id, HttpMethod.GET, request, String.class);
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(title).isEqualTo("junit");
+    }
 
 }
