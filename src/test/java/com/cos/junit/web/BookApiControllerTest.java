@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,6 +55,7 @@ public class BookApiControllerTest {
         bookRepository.save(book);
     }
 	
+	//책등록하기
 	@Test
 	public void saveBook_test() throws JsonProcessingException {
 		
@@ -78,6 +80,7 @@ public class BookApiControllerTest {
 		
 	}
 	
+	//책목록보기
 	@Sql("classpath:db/tableInit.sql")
 	@Test
 	public void getBookList_test() {
@@ -97,6 +100,7 @@ public class BookApiControllerTest {
 		assertThat(title).isEqualTo("junit");
 	}
 	
+	//책한건보기
 	@Sql("classpath:db/tableInit.sql")
     @Test
     public void getBookOne_test() {
@@ -115,6 +119,25 @@ public class BookApiControllerTest {
 
         assertThat(code).isEqualTo(1);
         assertThat(title).isEqualTo("junit");
+    }
+	
+	//책삭제하기
+	@Sql("classpath:db/tableInit.sql")
+    @Test
+    public void deleteBook_test() {
+		
+        // given
+        Integer id = 1;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/" + id, HttpMethod.DELETE, request, String.class);
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+
+        assertThat(code).isEqualTo(1);
     }
 
 }
