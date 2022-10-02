@@ -55,8 +55,8 @@ public class BookApiControllerTest {
         bookRepository.save(book);
     }
 	
-	//책등록하기
 	@Test
+	@DisplayName("책 등록")
 	public void saveBook_test() throws JsonProcessingException {
 		
 		//given
@@ -80,9 +80,9 @@ public class BookApiControllerTest {
 		
 	}
 	
-	//책목록보기
 	@Sql("classpath:db/tableInit.sql")
 	@Test
+	@DisplayName("책 목록")
 	public void getBookList_test() {
 		
 		//given
@@ -100,9 +100,9 @@ public class BookApiControllerTest {
 		assertThat(title).isEqualTo("junit");
 	}
 	
-	//책한건보기
 	@Sql("classpath:db/tableInit.sql")
     @Test
+    @DisplayName("책 한권")
     public void getBookOne_test() {
 		
         // given
@@ -121,9 +121,9 @@ public class BookApiControllerTest {
         assertThat(title).isEqualTo("junit");
     }
 	
-	//책삭제하기
 	@Sql("classpath:db/tableInit.sql")
     @Test
+    @DisplayName("책 삭제")
     public void deleteBook_test() {
 		
         // given
