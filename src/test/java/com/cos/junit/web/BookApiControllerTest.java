@@ -139,5 +139,33 @@ public class BookApiControllerTest {
 
         assertThat(code).isEqualTo(1);
     }
+	
+	@Sql("classpath:db/tableInit.sql")
+    @Test
+    @DisplayName("책 수정")
+    public void updateBook_test() throws JsonProcessingException {
+		
+        // given
+        Integer id = 1;
+        BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+        bookSaveReqDto.setTitle("spring");
+        bookSaveReqDto.setAuthor("김태희");
+        
+        String body = om.writeValueAsString(bookSaveReqDto);
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/" + id, HttpMethod.PUT, request, String.class);
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
+        String author = dc.read("$.body.author");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(title).isEqualTo("spring");
+        assertThat(author).isEqualTo("김태희");
+    }
 
 }
