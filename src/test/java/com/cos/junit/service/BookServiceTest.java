@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.cos.junit.domain.Book;
 import com.cos.junit.domain.BookRepository;
@@ -22,6 +23,7 @@ import com.cos.junit.web.dto.request.BookSaveReqDto;
 import com.cos.junit.web.dto.response.BookListRespDto;
 import com.cos.junit.web.dto.response.BookRespDto;
 
+@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
 	
